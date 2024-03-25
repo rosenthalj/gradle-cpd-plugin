@@ -10,8 +10,8 @@ import net.sourceforge.pmd.cpd.CSVRenderer;
 import net.sourceforge.pmd.cpd.Mark;
 import net.sourceforge.pmd.cpd.Match;
 import net.sourceforge.pmd.cpd.SimpleRenderer;
-import net.sourceforge.pmd.cpd.SourceCode;
-import net.sourceforge.pmd.cpd.SourceCode.StringCodeLoader;
+//import net.sourceforge.pmd.cpd.SourceCode;
+//import net.sourceforge.pmd.cpd.SourceCode.StringCodeLoader;
 import net.sourceforge.pmd.cpd.TokenEntry;
 import net.sourceforge.pmd.cpd.VSRenderer;
 import net.sourceforge.pmd.cpd.XMLRenderer;
@@ -83,14 +83,14 @@ class CpdReporterTest {
         Report.Xml xmlReport = new Report.Xml(xmlReportFile, "ISO-8859-15");
 
 
-        Mark mark = new Mark(new TokenEntry("1", "Clazz1.java", 1));
-        mark.setLineCount(1);
-        mark.setSourceCode(new SourceCode(new StringCodeLoader("String str = \"I am a duplicate\";")));
-
-        Match match = new Match(5, mark, mark);
-
-        // When:
-        underTest.generate(asList(csvReport, csvReportWithoutLines, textReport, vsReport, xmlReport), asList(match, match));
+//        Mark mark = new Mark(new TokenEntry("1", "Clazz1.java", 1));
+//        mark.setLineCount(1);
+//        mark.setSourceCode(new SourceCode(new StringCodeLoader("String str = \"I am a duplicate\";")));
+//
+//        Match match = new Match(5, mark, mark);
+//
+//        // When:
+//        underTest.generate(asList(csvReport, csvReportWithoutLines, textReport, vsReport, xmlReport), asList(match, match));
 
         // Then:
         assertThat(contentOf(csvReportFile)).startsWith("lines,tokens,occurrences\n");

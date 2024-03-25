@@ -10,12 +10,11 @@ import java.util.Properties;
 import javax.inject.Inject;
 
 import de.aaschmid.gradle.plugins.cpd.internal.worker.CpdWorkParameters.Report;
-import net.sourceforge.pmd.cpd.AnyLanguage;
 import net.sourceforge.pmd.cpd.CPDConfiguration;
 import net.sourceforge.pmd.cpd.Language;
 import net.sourceforge.pmd.cpd.LanguageFactory;
 import net.sourceforge.pmd.cpd.Match;
-import net.sourceforge.pmd.cpd.Tokenizer;
+import net.sourceforge.pmd.cpd.JavaTokenizer;
 import org.gradle.api.GradleException;
 import org.gradle.workers.WorkAction;
 import org.slf4j.Logger;
@@ -25,6 +24,11 @@ public abstract class CpdAction implements WorkAction<CpdWorkParameters> {
 
     private static final Logger logger = LoggerFactory.getLogger(CpdAction.class);
 
+    // originally defined in pmd-core/src/main/java/net/sourceforge/pmd/cpd/Tokenizer.java
+    String OPTION_SKIP_BLOCKS = "net.sourceforge.pmd.cpd.Tokenizer.skipBlocks";
+    // originally defined in pmd-core/src/main/java/net/sourceforge/pmd/cpd/Tokenizer.java
+    String OPTION_SKIP_BLOCKS_PATTERN = "net.sourceforge.pmd.cpd.Tokenizer.skipBlocksPattern";
+    
     private final CpdExecutor executor;
     private final CpdReporter reporter;
 
@@ -49,7 +53,7 @@ public abstract class CpdAction implements WorkAction<CpdWorkParameters> {
 
     private CPDConfiguration createCpdConfiguration(CpdWorkParameters config) {
         CPDConfiguration result = new CPDConfiguration();
-        result.setEncoding(config.getEncoding().get());
+        result.setSourceEncoding(config.getEncoding().get());
         result.setLanguage(createLanguage(config.getLanguage().get(), createLanguageProperties(config)));
         result.setMinimumTileSize(config.getMinimumTokenCount().get());
         result.setSkipDuplicates(config.getSkipDuplicateFiles().get());
@@ -83,25 +87,26 @@ public abstract class CpdAction implements WorkAction<CpdWorkParameters> {
         Properties languageProperties = new Properties();
 
         if (config.getIgnoreAnnotations().get()) {
-            languageProperties.setProperty(Tokenizer.IGNORE_ANNOTATIONS, "true");
+            languageProperties.setProperty(JavaTokenizer.IGNORE_ANNOTATIONS, "true");
         }
         if (config.getIgnoreIdentifiers().get()) {
-            languageProperties.setProperty(Tokenizer.IGNORE_IDENTIFIERS, "true");
+            languageProperties.setProperty(JavaTokenizer.IGNORE_IDENTIFIERS, "true");
         }
         if (config.getIgnoreLiterals().get()) {
-            languageProperties.setProperty(Tokenizer.IGNORE_LITERALS, "true");
+            languageProperties.setProperty(JavaTokenizer.IGNORE_LITERALS, "true");
         }
-        languageProperties.setProperty(Tokenizer.OPTION_SKIP_BLOCKS, Boolean.toString(config.getSkipBlocks().get()));
-        languageProperties.setProperty(Tokenizer.OPTION_SKIP_BLOCKS_PATTERN, config.getSkipBlocksPattern().get());
+        languageProperties.setProperty(OPTION_SKIP_BLOCKS, Boolean.toString(config.getSkipBlocks().get()));
+        languageProperties.setProperty(OPTION_SKIP_BLOCKS_PATTERN, config.getSkipBlocksPattern().get());
         return languageProperties;
     }
 
     private Language createLanguage(String language, Properties languageProperties) {
         Language result = LanguageFactory.createLanguage(language, languageProperties);
         logger.info("Using CPD language class '{}' for checking duplicates.", result);
-        if (result instanceof AnyLanguage) {
-            logger.warn("Could not detect CPD language for '{}', using 'any' as fallback language.", language);
-        }
+        // LanguageFactory.createLanguage will throw an UnsupportedOperationException if it can not find the language
+        //if (result instanceof AnyLanguage) {
+        //    logger.warn("Could not detect CPD language for '{}', using 'any' as fallback language.", language);
+        //}
         return result;
     }
 

@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import de.aaschmid.gradle.plugins.cpd.test.GradleExtension;
-import net.sourceforge.pmd.cpd.Tokenizer;
+import net.sourceforge.pmd.cpd.internal.CpdLanguagePropertiesDefaults;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -57,7 +57,7 @@ class CpdPluginTest {
         assertThat(cpd.isSkipDuplicateFiles()).isFalse();
         assertThat(cpd.isSkipLexicalErrors()).isFalse();
         assertThat(cpd.isSkipBlocks()).isTrue();
-        assertThat(cpd.getSkipBlocksPattern()).isEqualTo(Tokenizer.DEFAULT_SKIP_BLOCKS_PATTERN);
+        assertThat(cpd.getSkipBlocksPattern()).isEqualTo(CpdLanguagePropertiesDefaults.DEFAULT_SKIP_BLOCKS_PATTERN);
         assertThat(cpd.getToolVersion()).isEqualTo("6.14.0");
     }
 
@@ -103,7 +103,7 @@ class CpdPluginTest {
         assertThat(t.getSkipDuplicateFiles()).isFalse();
         assertThat(t.getSkipLexicalErrors()).isFalse();
         assertThat(t.getSkipBlocks()).isTrue();
-        assertThat(t.getSkipBlocksPattern()).isEqualTo(Tokenizer.DEFAULT_SKIP_BLOCKS_PATTERN);
+        assertThat(t.getSkipBlocksPattern()).isEqualTo(CpdLanguagePropertiesDefaults.DEFAULT_SKIP_BLOCKS_PATTERN);
 
         assertThat(t.getSource()).isEmpty();
     }
@@ -140,7 +140,7 @@ class CpdPluginTest {
         assertThat(t.getSkipDuplicateFiles()).isFalse();
         assertThat(t.getSkipLexicalErrors()).isFalse();
         assertThat(t.getSkipBlocks()).isTrue();
-        assertThat(t.getSkipBlocksPattern()).isEqualTo(Tokenizer.DEFAULT_SKIP_BLOCKS_PATTERN);
+        assertThat(t.getSkipBlocksPattern()).isEqualTo(CpdLanguagePropertiesDefaults.DEFAULT_SKIP_BLOCKS_PATTERN);
 
         assertThat(t.getSource()).isEmpty();
     }
