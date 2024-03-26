@@ -113,7 +113,10 @@ class CpdReporter {
 	            }
                 throw new RuntimeException(e);
 	        }
-	    	new VSRenderer().render(report, writer);
+	        getVSRenderer().render(report, writer);
+	    }
+	    public VSRenderer getVSRenderer() {
+	    	return new VSRenderer();
 	    }
     }
 

@@ -139,7 +139,8 @@ class CpdReporterTest {
         CPDRenderer result = underTest.createRendererFor(report);
 
         // Then:
-        assertThat(result).isInstanceOf(VSRenderer.class);
+        assertThat(result).isInstanceOf(CpdReporter.LocalVSRenderer.class);
+        assertThat(((CpdReporter.LocalVSRenderer)result).getVSRenderer()).isInstanceOf(VSRenderer.class);
     }
 
     @Test

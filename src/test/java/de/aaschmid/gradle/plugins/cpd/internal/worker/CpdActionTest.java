@@ -1,6 +1,7 @@
 package de.aaschmid.gradle.plugins.cpd.internal.worker;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
 
@@ -124,7 +125,7 @@ class CpdActionTest {
         verify(executor).run(cpdConfiguration.capture(), any());
 
         CPDConfiguration actualCpdConfig = cpdConfiguration.getValue();
-        assertThat(actualCpdConfig.getSourceEncoding()).isEqualTo("US-ASCII");
+        assertThat(actualCpdConfig.getSourceEncoding()).isEqualTo(Charset.forName("US-ASCII"));
 //        assertThat(actualCpdConfig.getLanguage()).isInstanceOf(KotlinLanguage.class);
         assertThat(actualCpdConfig.getMinimumTileSize()).isEqualTo(15);
         assertThat(actualCpdConfig.isSkipDuplicates()).isTrue();

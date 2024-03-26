@@ -34,7 +34,9 @@ dependencies {
     compileOnly("net.sourceforge.pmd:pmd-dist:7.0.0")
 
     testImplementation("net.sourceforge.pmd:pmd-compat6:7.0.0")
-    testImplementation("net.sourceforge.pmd:pmd-dist:7.0.0")
+    testImplementation("net.sourceforge.pmd:pmd-kotlin:7.0.0")
+    testImplementation("net.sourceforge.pmd:pmd-cpp:7.0.0")
+    //testImplementation("net.sourceforge.pmd:pmd-dist:7.0.0")
     testImplementation("com.google.guava:guava:28.1-jre")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     testImplementation("org.assertj:assertj-core:3.13.2")
